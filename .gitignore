@@ -8,6 +8,7 @@ artifacts/
 cache/
 typechain/
 typechain-types/
+types/
 
 # Testing
 coverage/
