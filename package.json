@@ -1,0 +1,26 @@
+{
+  "name": "certificate-dapp",
+  "version": "1.0.0",
+  "description": "Blockchain-based certificate verification system",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node",
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost",
+    "serve": "npx live-server frontend --port=3000"
+  },
+  "keywords": [
+    "blockchain",
+    "certificate",
+    "ethereum",
+    "solidity",
+    "dapp"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.3",
+    "ethers": "^6.16.0",
+    "hardhat": "^3.3.0"
+  },
+  "type": "module"
+}

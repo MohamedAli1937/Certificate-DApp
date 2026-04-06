@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Blockchain-powered certificate verification system. Issue, verify, and authenticate academic certificates with immutable on-chain records."
+    />
+    <title>CertChain — Blockchain Certificate Verification</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <nav id="main-nav">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        </div>
+        <span class="brand-text">CertChain</span>
+      </div>
+
+      <div class="nav-tabs">
+        <button id="tab-admin" class="nav-tab active" data-tab="admin">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+          </svg>
+          Admin Panel
+        </button>
+        <button id="tab-verify" class="nav-tab" data-tab="verify">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          Verify Certificate
+        </button>
+      </div>
+
+      <button id="connect-wallet-btn" class="wallet-btn">
+        <span class="wallet-dot"></span>
+        <span class="wallet-text">Connect Wallet</span>
+      </button>
+    </nav>
+    <main>
+      <div id="stats-bar" class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-value" id="stat-total">—</span>
+          <span class="stat-label">Certificates Issued</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="stat-network">—</span>
+          <span class="stat-label">Network</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="stat-contract">—</span>
+          <span class="stat-label">Contract</span>
+        </div>
+      </div>
+      <section id="admin-panel" class="panel active">
+        <div class="panel-grid">
+          <div class="card card-issue">
+            <div class="card-header">
+              <div class="card-icon issue-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="12" y1="18" x2="12" y2="12" />
+                  <line x1="9" y1="15" x2="15" y2="15" />
+                </svg>
+              </div>
+              <h2>Issue Certificate</h2>
+              <p class="card-subtitle">Add a new student certificate to the blockchain</p>
+            </div>
+
+            <form id="issue-form" class="form">
+              <div class="form-group">
+                <label for="student-id">Student ID</label>
+                <input type="text" id="student-id" placeholder="e.g. STU-2026-001" required autocomplete="off" />
+              </div>
+              <div class="form-group">
+                <label for="student-name">Student Name</label>
+                <input type="text" id="student-name" placeholder="e.g. Alice Johnson" required autocomplete="off" />
+              </div>
+              <div class="form-group">
+                <label for="course-name">Course Name</label>
+                <input
+                  type="text"
+                  id="course-name"
+                  placeholder="e.g. Blockchain Fundamentals"
+                  required
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-group">
+                <label for="grade">Grade</label>
+                <input type="text" id="grade" placeholder="e.g. A+" required autocomplete="off" />
+              </div>
+              <button type="submit" id="issue-btn" class="btn btn-primary btn-glow">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Issue Certificate
+              </button>
+            </form>
+          </div>
+          <div class="card card-revoke">
+            <div class="card-header">
+              <div class="card-icon revoke-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </div>
+              <h2>Revoke Certificate</h2>
+              <p class="card-subtitle">Revoke an existing certificate by student ID</p>
+            </div>
+
+            <form id="revoke-form" class="form">
+              <div class="form-group">
+                <label for="revoke-student-id">Student ID</label>
+                <input type="text" id="revoke-student-id" placeholder="e.g. STU-2026-001" required autocomplete="off" />
+              </div>
+              <button type="submit" id="revoke-btn" class="btn btn-danger btn-glow">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+                Revoke Certificate
+              </button>
+            </form>
+            <div class="activity-section">
+              <h3>Recent Activity</h3>
+              <div id="activity-feed" class="activity-feed">
+                <p class="activity-empty">No recent activity</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="verify-panel" class="panel">
+        <div class="verify-container">
+          <div class="verify-header">
+            <h1>Verify a Certificate</h1>
+            <p>Enter a Student ID to check if a certificate exists on the blockchain and verify its authenticity.</p>
+          </div>
+
+          <form id="verify-form" class="verify-search">
+            <div class="search-wrapper">
+              <svg
+                class="search-icon"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                id="verify-student-id"
+                placeholder="Enter Student ID (e.g. STU-2026-001)"
+                required
+                autocomplete="off"
+              />
+              <button type="submit" id="verify-btn" class="btn btn-accent">Verify</button>
+            </div>
+          </form>
+          <div id="verify-result" class="result-card hidden">
+            <div id="result-status-bar" class="result-status-bar">
+              <span id="result-badge" class="badge"></span>
+            </div>
+            <div class="result-body">
+              <div class="result-row">
+                <span class="result-label">Student ID</span>
+                <span class="result-value" id="result-student-id">—</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Student Name</span>
+                <span class="result-value" id="result-student-name">—</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Course</span>
+                <span class="result-value" id="result-course">—</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Grade</span>
+                <span class="result-value" id="result-grade">—</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Issue Date</span>
+                <span class="result-value" id="result-date">—</span>
+              </div>
+              <div class="result-divider"></div>
+              <div class="result-row hash-row">
+                <span class="result-label">On-Chain Hash</span>
+                <span class="result-value hash-value" id="result-hash">—</span>
+              </div>
+            </div>
+          </div>
+          <div id="verify-not-found" class="not-found-card hidden">
+            <div class="not-found-icon">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <h3>Certificate Not Found</h3>
+            <p>
+              No certificate was found on the blockchain for the given Student ID. Please double-check the ID and try
+              again.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="toast-container" class="toast-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.4/ethers.umd.min.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
