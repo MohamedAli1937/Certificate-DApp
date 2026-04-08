@@ -20,6 +20,8 @@ const statTotal = document.getElementById("stat-total");
 const statNetwork = document.getElementById("stat-network");
 const statContract = document.getElementById("stat-contract");
 const verifyResult = document.getElementById("verify-result");
+const pdfActions = document.getElementById("pdf-actions");
+const downloadPdfBtn = document.getElementById("download-pdf-btn");
 const toastContainer = document.getElementById("toast-container");
 
 tabAdmin.addEventListener("click", () => switchTab("admin"));
@@ -187,6 +189,7 @@ verifyForm.addEventListener("submit", async (e) => {
     badge.className = "badge " + (revoked ? "revoked" : "valid");
     badge.textContent = revoked ? "\u274c Revoked" : "\u2705 Valid";
     verifyResult.classList.remove("hidden");
+    pdfActions.classList.toggle("hidden", revoked);
     showToast("success", "Certificate found!");
   } catch (err) {
     document.getElementById("result-student-id").textContent = sid;
@@ -201,6 +204,7 @@ verifyForm.addEventListener("submit", async (e) => {
     badge.className = "badge not-found";
     badge.textContent = "Certificate Not Verified";
     verifyResult.classList.remove("hidden");
+    pdfActions.classList.add("hidden");
   } finally {
     setLoading(verifyBtn, false);
   }
@@ -262,4 +266,115 @@ function extractReason(err) {
   const m = err?.message || "";
   const r = m.match(/reason="([^"]+)"/) || m.match(/reverted with reason string '([^']+)'/);
   return r ? r[1] : null;
+}
+
+downloadPdfBtn.addEventListener("click", generateCertificatePDF);
+
+function generateCertificatePDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+  const w = doc.internal.pageSize.getWidth();
+  const h = doc.internal.pageSize.getHeight();
+
+  const studentName = document.getElementById("result-student-name").textContent;
+  const studentId = document.getElementById("result-student-id").textContent;
+  const course = document.getElementById("result-course").textContent;
+  const grade = document.getElementById("result-grade").textContent;
+  const issueDate = document.getElementById("result-date").textContent;
+  const hash = document.getElementById("result-hash").textContent;
+
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, w, h, "F");
+
+  doc.setDrawColor(102, 126, 234);
+  doc.setLineWidth(1.5);
+  doc.rect(10, 10, w - 20, h - 20);
+  doc.setLineWidth(0.5);
+  doc.rect(13, 13, w - 26, h - 26);
+
+  doc.setDrawColor(102, 126, 234);
+  doc.setLineWidth(0.3);
+  doc.line(20, 55, w - 20, 55);
+  doc.line(20, h - 55, w - 20, h - 55);
+
+  const cx = w / 2;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.setTextColor(102, 126, 234);
+  doc.text("CERTCHAIN", cx, 30, { align: "center" });
+
+  doc.setFontSize(28);
+  doc.setTextColor(241, 245, 249);
+  doc.text("Certificate of Completion", cx, 45, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  doc.setTextColor(148, 163, 184);
+  doc.text("This certificate is proudly presented to", cx, 70, { align: "center" });
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(32);
+  doc.setTextColor(102, 126, 234);
+  doc.text(studentName, cx, 88, { align: "center" });
+
+  doc.setDrawColor(102, 126, 234);
+  doc.setLineWidth(0.4);
+  const nameW = doc.getTextWidth(studentName);
+  doc.line(cx - nameW / 2 - 5, 92, cx + nameW / 2 + 5, 92);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.setTextColor(148, 163, 184);
+  doc.text("for successfully completing the course", cx, 105, { align: "center" });
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.setTextColor(241, 245, 249);
+  doc.text(course, cx, 118, { align: "center" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(12);
+  doc.setTextColor(148, 163, 184);
+  doc.text("with a grade of", cx, 130, { align: "center" });
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(18);
+  doc.setTextColor(16, 185, 129);
+  doc.text(grade, cx, 140, { align: "center" });
+
+  const col1 = 60;
+  const col2 = w - 60;
+  const bottomY = h - 42;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text("STUDENT ID", col1, bottomY, { align: "center" });
+  doc.setFontSize(10);
+  doc.setTextColor(148, 163, 184);
+  doc.text(studentId, col1, bottomY + 6, { align: "center" });
+
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text("ISSUE DATE", cx, bottomY, { align: "center" });
+  doc.setFontSize(10);
+  doc.setTextColor(148, 163, 184);
+  doc.text(issueDate, cx, bottomY + 6, { align: "center" });
+
+  doc.setFontSize(8);
+  doc.setTextColor(100, 116, 139);
+  doc.text("STATUS", col2, bottomY, { align: "center" });
+  doc.setFontSize(10);
+  doc.setTextColor(16, 185, 129);
+  doc.text("VERIFIED", col2, bottomY + 6, { align: "center" });
+
+  doc.setFont("courier", "normal");
+  doc.setFontSize(6);
+  doc.setTextColor(100, 116, 139);
+  doc.text("On-Chain Hash: " + hash, cx, h - 18, { align: "center" });
+
+  const filename = "CertChain_" + studentId.replace(/[^a-zA-Z0-9-]/g, "_") + ".pdf";
+  doc.save(filename);
+  showToast("success", "Certificate PDF downloaded!");
 }
