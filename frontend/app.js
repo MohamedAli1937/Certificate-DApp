@@ -22,7 +22,15 @@ const statContract = document.getElementById("stat-contract");
 const verifyResult = document.getElementById("verify-result");
 const pdfActions = document.getElementById("pdf-actions");
 const downloadPdfBtn = document.getElementById("download-pdf-btn");
+const downloadResultQrBtn = document.getElementById("download-result-qr-btn");
+const scanQrBtn = document.getElementById("scan-qr-btn");
+const stopScanBtn = document.getElementById("stop-scan-btn");
+const qrScannerContainer = document.getElementById("qr-scanner-container");
+const qrModal = document.getElementById("qr-modal");
+const qrModalClose = document.getElementById("qr-modal-close");
+const qrDownloadBtn = document.getElementById("qr-download-btn");
 const toastContainer = document.getElementById("toast-container");
+let html5QrScanner = null;
 
 tabAdmin.addEventListener("click", () => switchTab("admin"));
 tabVerify.addEventListener("click", () => switchTab("verify"));
@@ -113,6 +121,7 @@ issueForm.addEventListener("submit", async (e) => {
     await tx.wait();
     showToast("success", "Certificate issued for " + sname);
     addActivity("issued", sid, sname);
+    showQrModal(sid);
     issueForm.reset();
     await refreshStats();
   } catch (err) {
@@ -190,6 +199,18 @@ verifyForm.addEventListener("submit", async (e) => {
     badge.textContent = revoked ? "\u274c Revoked" : "\u2705 Valid";
     verifyResult.classList.remove("hidden");
     pdfActions.classList.toggle("hidden", revoked);
+    if (!revoked) {
+      const resultQr = document.getElementById("result-qr-code");
+      resultQr.innerHTML = "";
+      new QRCode(resultQr, {
+        text: sid,
+        width: 120,
+        height: 120,
+        colorDark: "#0a0e1a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H,
+      });
+    }
     showToast("success", "Certificate found!");
   } catch (err) {
     document.getElementById("result-student-id").textContent = sid;
@@ -377,4 +398,106 @@ function generateCertificatePDF() {
   const filename = "CertChain_" + studentId.replace(/[^a-zA-Z0-9-]/g, "_") + ".pdf";
   doc.save(filename);
   showToast("success", "Certificate PDF downloaded!");
+}
+
+function showQrModal(studentId) {
+  const display = document.getElementById("qr-code-display");
+  display.innerHTML = "";
+  new QRCode(display, {
+    text: studentId,
+    width: 200,
+    height: 200,
+    colorDark: "#0a0e1a",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+  document.getElementById("qr-modal-id").textContent = studentId;
+  qrModal.classList.remove("hidden");
+}
+
+qrModalClose.addEventListener("click", () => {
+  qrModal.classList.add("hidden");
+});
+
+qrModal.addEventListener("click", (e) => {
+  if (e.target === qrModal) qrModal.classList.add("hidden");
+});
+
+function downloadQrCodeWithPadding(canvasSelector, studentIdSelector, successMessage) {
+  const srcCanvas = document.querySelector(canvasSelector);
+
+  if (!srcCanvas) {
+    showToast("error", "No QR code to download.");
+    return;
+  }
+
+  const padding = Math.floor(srcCanvas.width * 0.1);
+  const dlCanvas = document.createElement("canvas");
+  dlCanvas.width = srcCanvas.width + padding * 2;
+  dlCanvas.height = srcCanvas.height + padding * 2;
+
+  const ctx = dlCanvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, dlCanvas.width, dlCanvas.height);
+  ctx.drawImage(srcCanvas, padding, padding);
+
+  const link = document.createElement("a");
+  const sid = document.getElementById(studentIdSelector).textContent;
+
+  link.download = "CertChain_QR_" + sid.replace(/[^a-zA-Z0-9-]/g, "_") + ".png";
+  link.href = dlCanvas.toDataURL("image/png");
+  link.click();
+
+  showToast("success", successMessage);
+}
+
+qrDownloadBtn.addEventListener("click", () => {
+  downloadQrCodeWithPadding("#qr-code-display canvas", "qr-modal-id", "QR code downloaded!");
+});
+
+downloadResultQrBtn.addEventListener("click", () => {
+  downloadQrCodeWithPadding(
+    "#result-qr-code canvas",
+    "result-student-id",
+    "Verified QR code downloaded!"
+  );
+});
+
+scanQrBtn.addEventListener("click", startQrScanner);
+stopScanBtn.addEventListener("click", stopQrScanner);
+
+async function startQrScanner() {
+  qrScannerContainer.classList.remove("hidden");
+  scanQrBtn.classList.add("hidden");
+  try {
+    html5QrScanner = new Html5Qrcode("qr-reader");
+    await html5QrScanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onQrCodeScanned,
+      () => {}
+    );
+  } catch (err) {
+    showToast("error", "Camera access denied or unavailable.");
+    stopQrScanner();
+  }
+}
+
+async function stopQrScanner() {
+  if (html5QrScanner) {
+    try {
+      await html5QrScanner.stop();
+    } catch {}
+    html5QrScanner = null;
+  }
+  qrScannerContainer.classList.add("hidden");
+  scanQrBtn.classList.remove("hidden");
+}
+
+async function onQrCodeScanned(decodedText) {
+  await stopQrScanner();
+  const cleaned = decodedText.trim();
+  document.getElementById("verify-student-id").value = cleaned;
+  showToast("success", "QR scanned: " + cleaned);
+  verifyForm.dispatchEvent(new Event("submit", { cancelable: true }));
 }

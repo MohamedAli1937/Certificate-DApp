@@ -109,13 +109,15 @@ Open `http://127.0.0.1:3000` in your browser.
 1. Click **Connect Wallet** using the deployer account (Account #0)
 2. Navigate to the **Admin Panel** tab
 3. Fill in Student ID, Name, Course, and Grade, then click **Issue Certificate**
-4. To revoke, enter the Student ID and click **Revoke Certificate**
+4. A QR Code modal will automatically appear, allowing you to **Download the QR Code** for the student
+5. To revoke, enter the Student ID and click **Revoke Certificate**
 
 ### Public (Verification)
 
 1. Navigate to the **Verify Certificate** tab
-2. Enter a Student ID and click **Verify**
+2. Enter a Student ID and click **Verify**, or click **Scan QR Code** to scan a physical certificate with your camera
 3. The certificate details, validity status, and on-chain hash will accurately display based on blockchain data
+4. For valid certificates, you can instantly download a beautifully styled **Certificate PDF** or a scannable **QR Code**
 
 ---
 
@@ -172,12 +174,10 @@ Re-deploy with `npm run deploy` after restarting `npm run node` to refresh the s
 - **IPFS Integration**: Store certificate PDFs on IPFS and save the content hash on-chain
 - **NFT Certificates (ERC-721)**: Mint each certificate as a transferable NFT directly reading in the student wallet
 - **Network Deployment**: Establish pipelines for Sepolia or Ethereum mainnet deployment
-- **QR Code Verification**: Generate a scannable code linking directly to the verification portal
 - **Batch Issuance**: Support CSV uploads to issue multiple certificates in a single transaction
 - **Extended Fields**: Support institution name, date of birth, category, and expiry metadata
 - **Event Dashboard**: Trace full timelines of all on-chain issuance and revocation events
 - **Email Notifications**: Dispatch updates to students automatically upon issuance or revocation
-- **PDF Export**: Generate styled certificates dynamically via the verification page
 
 ---
 
