@@ -35,4 +35,4 @@ Thumbs.db
 *.swp
 
 # Frontend Build / Generated Config
-# frontend/config.js   <-- Uncomment if you want to keep your repo clean and auto-generate this on every deploy
+frontend/config.js

@@ -73,15 +73,17 @@ describe("CertificateVerification", function () {
     });
 
     it("should prevent non-owner from issuing", async function () {
-      await expect(contract.connect(otherUser).issueCertificate("STU001", "Alice", "Course", "A")).to.be.revertedWith(
-        "Only admin can perform this action"
-      );
+      await expect(
+        contract.connect(otherUser).issueCertificate("STU001", "Alice", "Course", "A")
+      ).to.be.revertedWith("Only admin can perform this action");
     });
   });
 
   describe("Verifying Certificates", function () {
     it("should revert for non-existent certificate", async function () {
-      await expect(contract.verifyCertificate("FAKE_ID")).to.be.revertedWith("Certificate does not exist");
+      await expect(contract.verifyCertificate("FAKE_ID")).to.be.revertedWith(
+        "Certificate does not exist"
+      );
     });
 
     it("should allow anyone to verify a certificate", async function () {
@@ -108,12 +110,16 @@ describe("CertificateVerification", function () {
     });
 
     it("should reject revoking a non-existent certificate", async function () {
-      await expect(contract.revokeCertificate("FAKE_ID")).to.be.revertedWith("Certificate does not exist");
+      await expect(contract.revokeCertificate("FAKE_ID")).to.be.revertedWith(
+        "Certificate does not exist"
+      );
     });
 
     it("should reject double revocation", async function () {
       await contract.revokeCertificate("STU001");
-      await expect(contract.revokeCertificate("STU001")).to.be.revertedWith("Certificate is already revoked");
+      await expect(contract.revokeCertificate("STU001")).to.be.revertedWith(
+        "Certificate is already revoked"
+      );
     });
 
     it("should prevent non-owner from revoking", async function () {
@@ -133,7 +139,9 @@ describe("CertificateVerification", function () {
     });
 
     it("should revert for non-existent certificate", async function () {
-      await expect(contract.getCertificateHash("FAKE_ID")).to.be.revertedWith("Certificate does not exist");
+      await expect(contract.getCertificateHash("FAKE_ID")).to.be.revertedWith(
+        "Certificate does not exist"
+      );
     });
   });
 });

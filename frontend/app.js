@@ -20,7 +20,6 @@ const statTotal = document.getElementById("stat-total");
 const statNetwork = document.getElementById("stat-network");
 const statContract = document.getElementById("stat-contract");
 const verifyResult = document.getElementById("verify-result");
-const verifyNotFound = document.getElementById("verify-not-found");
 const toastContainer = document.getElementById("toast-container");
 
 tabAdmin.addEventListener("click", () => switchTab("admin"));
@@ -71,7 +70,9 @@ function disconnectWallet() {
 }
 
 if (window.ethereum) {
-  window.ethereum.on("accountsChanged", (a) => (a.length === 0 ? disconnectWallet() : connectWallet()));
+  window.ethereum.on("accountsChanged", (a) =>
+    a.length === 0 ? disconnectWallet() : connectWallet()
+  );
   window.ethereum.on("chainChanged", () => window.location.reload());
 }
 
@@ -164,7 +165,6 @@ verifyForm.addEventListener("submit", async (e) => {
   }
   setLoading(verifyBtn, true);
   verifyResult.classList.add("hidden");
-  verifyNotFound.classList.add("hidden");
   try {
     const [name, course, grade, date, revoked] = await rc.verifyCertificate(sid);
     const hash = await rc.getCertificateHash(sid);
@@ -189,9 +189,18 @@ verifyForm.addEventListener("submit", async (e) => {
     verifyResult.classList.remove("hidden");
     showToast("success", "Certificate found!");
   } catch (err) {
-    const reason = extractReason(err);
-    if (reason && reason.includes("does not exist")) verifyNotFound.classList.remove("hidden");
-    else showToast("error", reason || "Verification failed.");
+    document.getElementById("result-student-id").textContent = sid;
+    document.getElementById("result-student-name").textContent = "—";
+    document.getElementById("result-course").textContent = "—";
+    document.getElementById("result-grade").textContent = "—";
+    document.getElementById("result-date").textContent = "—";
+    document.getElementById("result-hash").textContent = "—";
+    const bar = document.getElementById("result-status-bar");
+    const badge = document.getElementById("result-badge");
+    bar.className = "result-status-bar not-found";
+    badge.className = "badge not-found";
+    badge.textContent = "Certificate Not Verified";
+    verifyResult.classList.remove("hidden");
   } finally {
     setLoading(verifyBtn, false);
   }
