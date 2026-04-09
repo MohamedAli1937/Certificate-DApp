@@ -123,6 +123,7 @@ Open `http://127.0.0.1:3000` in your browser.
 
 ![Admin Panel of CertChain DApp](assets/admin.png)
 ![Verification Panel of CertChain DApp](assets/verify.png)
+![Certificate of CertChain DApp](assets/certificate.png)
 
 ## Project Structure
 
