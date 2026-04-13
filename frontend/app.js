@@ -304,16 +304,16 @@ function generateCertificatePDF() {
   const issueDate = document.getElementById("result-date").textContent;
   const hash = document.getElementById("result-hash").textContent;
 
-  doc.setFillColor(15, 23, 42);
+  doc.setFillColor(5, 7, 10);
   doc.rect(0, 0, w, h, "F");
 
-  doc.setDrawColor(102, 126, 234);
+  doc.setDrawColor(247, 147, 30);
   doc.setLineWidth(1.5);
   doc.rect(10, 10, w - 20, h - 20);
   doc.setLineWidth(0.5);
   doc.rect(13, 13, w - 26, h - 26);
 
-  doc.setDrawColor(102, 126, 234);
+  doc.setDrawColor(247, 147, 30);
   doc.setLineWidth(0.3);
   doc.line(20, 55, w - 20, 55);
   doc.line(20, h - 55, w - 20, h - 55);
@@ -322,7 +322,7 @@ function generateCertificatePDF() {
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.setTextColor(102, 126, 234);
+  doc.setTextColor(247, 147, 30);
   doc.text("CERTCHAIN", cx, 30, { align: "center" });
 
   doc.setFontSize(28);
@@ -336,10 +336,10 @@ function generateCertificatePDF() {
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(32);
-  doc.setTextColor(102, 126, 234);
+  doc.setTextColor(247, 147, 30);
   doc.text(studentName, cx, 88, { align: "center" });
 
-  doc.setDrawColor(102, 126, 234);
+  doc.setDrawColor(247, 147, 30);
   doc.setLineWidth(0.4);
   const nameW = doc.getTextWidth(studentName);
   doc.line(cx - nameW / 2 - 5, 92, cx + nameW / 2 + 5, 92);

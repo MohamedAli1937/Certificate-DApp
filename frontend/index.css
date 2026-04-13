@@ -1,39 +1,39 @@
 :root {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.7);
-  --bg-card-hover: rgba(24, 34, 56, 0.8);
-  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-primary: #05070a;
+  --bg-secondary: #0d1117;
+  --bg-card: rgba(13, 17, 23, 0.7);
+  --bg-card-hover: rgba(22, 27, 34, 0.8);
+  --bg-glass: rgba(255, 255, 255, 0.02);
 
-  --accent-blue: #667eea;
-  --accent-purple: #764ba2;
-  --accent-cyan: #06b6d4;
+  --accent-gold: #f7931e;
+  --accent-amber: #ff6b00;
+  --accent-yellow: #ffcc00;
   --accent-green: #10b981;
   --accent-red: #ef4444;
-  --accent-amber: #f59e0b;
+  --accent-teal: #14b8a6;
 
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-primary: linear-gradient(135deg, #f7931e 0%, #ff6b00 100%);
   --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
   --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   --gradient-glow: linear-gradient(
     135deg,
-    rgba(102, 126, 234, 0.15) 0%,
-    rgba(118, 75, 162, 0.15) 100%
+    rgba(247, 147, 30, 0.2) 0%,
+    rgba(255, 107, 0, 0.2) 100%
   );
 
-  --text-primary: #f1f5f9;
+  --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --text-accent: #667eea;
+  --text-accent: #f7931e;
 
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.05);
   --border-card: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(102, 126, 234, 0.5);
+  --border-focus: rgba(247, 147, 30, 0.5);
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.15);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 30px rgba(247, 147, 30, 0.15);
 
   --nav-height: 70px;
   --radius-sm: 8px;
@@ -78,11 +78,11 @@ body::before {
   height: 100%;
   background: radial-gradient(
       ellipse 80% 50% at 20% 20%,
-      rgba(102, 126, 234, 0.08) 0%,
+      rgba(247, 147, 30, 0.08) 0%,
       transparent 60%
     ),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(118, 75, 162, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 60% at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 50%);
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255, 107, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 60% at 50% 50%, rgba(20, 184, 166, 0.04) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -114,11 +114,21 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--gradient-primary);
-  border-radius: var(--radius-sm);
-  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform var(--transition-base);
+}
+
+.brand-icon:hover {
+  transform: scale(1.05);
+}
+
+#nav-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .brand-text {
@@ -189,7 +199,7 @@ nav {
 
 .wallet-btn:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: var(--accent-blue);
+  border-color: var(--accent-gold);
   box-shadow: var(--shadow-glow);
 }
 
@@ -241,7 +251,7 @@ nav {
 .stat-value {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--accent-blue);
+  color: var(--accent-gold);
   font-variant-numeric: tabular-nums;
 }
 
@@ -393,9 +403,9 @@ main {
 }
 
 .form-group input:focus {
-  border-color: var(--accent-blue);
-  background: rgba(102, 126, 234, 0.06);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+  border-color: var(--accent-gold);
+  background: rgba(247, 147, 30, 0.06);
+  box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.12);
 }
 
 .btn {
@@ -646,8 +656,8 @@ main {
 }
 
 .search-wrapper:focus-within {
-  border-color: var(--accent-blue);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12), var(--shadow-glow);
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(247, 147, 30, 0.12), var(--shadow-glow);
 }
 
 .search-icon {
@@ -790,11 +800,11 @@ main {
 .hash-value {
   font-family: "Courier New", Courier, monospace;
   font-size: 0.75rem;
-  color: var(--accent-cyan);
+  color: var(--accent-teal);
   word-break: break-all;
   padding: 0.625rem 0.875rem;
-  background: rgba(6, 182, 212, 0.06);
-  border: 1px solid rgba(6, 182, 212, 0.15);
+  background: rgba(20, 184, 166, 0.06);
+  border: 1px solid rgba(20, 184, 166, 0.15);
   border-radius: var(--radius-sm);
   width: 100%;
 }

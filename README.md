@@ -1,4 +1,4 @@
-# CertChain
+# <img src="frontend/assets/logo.png" width="40" height="40" style="vertical-align: middle; margin-right: 10px;"> CertChain
 
 > A decentralized application for issuing and verifying academic certificates on the Ethereum blockchain.
 
@@ -23,13 +23,14 @@
 
 ## Tech Stack
 
-| Layer          | Technology              |
-| -------------- | ----------------------- |
-| Smart Contract | Solidity 0.8.20         |
-| Framework      | Hardhat v3 (ES Modules) |
-| Frontend       | Vanilla HTML / CSS / JS |
-| Wallet Bridge  | Ethers.js v6 (CDN)      |
-| Wallet         | MetaMask                |
+| Layer                 | Technology                     |
+| --------------------- | ------------------------------ |
+| **Smart Contract**    | Solidity 0.8.20                |
+| **Blockchain Engine** | Hardhat v3 (ES Modules)        |
+| **Frontend UI**       | Vanilla HTML5 / Modern CSS3    |
+| **Logic Layer**       | Vanilla JS (ES13+)             |
+| **Wallet Bridge**     | Ethers.js v6 (CDN)             |
+| **Utils**             | jsPDF, QRCode.js, Html5-QRCode |
 
 ---
 
@@ -104,20 +105,18 @@ Open `http://127.0.0.1:3000` in your browser.
 
 ## Usage
 
-### Admin (Contract Deployer)
+### Admin Panel (Authority)
 
-1. Click **Connect Wallet** using the deployer account (Account #0)
-2. Navigate to the **Admin Panel** tab
-3. Fill in Student ID, Name, Course, and Grade, then click **Issue Certificate**
-4. A QR Code modal will automatically appear, allowing you to **Download the QR Code** for the student
-5. To revoke, enter the Student ID and click **Revoke Certificate**
+- **Connect Wallet**: Use the account that deployed the contract.
+- **Issue**: Enter Student ID, Name, Course, and Grade. Confirm transaction in MetaMask.
+- **QR Modal**: Upon success, a QR code is generated. Download it for the student.
+- **Revoke**: Change certificate status to "Revoked" instantly if needed.
 
-### Public (Verification)
+### Verification Panel (Public)
 
-1. Navigate to the **Verify Certificate** tab
-2. Enter a Student ID and click **Verify**, or click **Scan QR Code** to scan a physical certificate with your camera
-3. The certificate details, validity status, and on-chain hash will accurately display based on blockchain data
-4. For valid certificates, you can instantly download a beautifully styled **Certificate PDF** or a scannable **QR Code**
+- **Manual Check**: Search by Student ID to pull live blockchain data.
+- **Scanner**: Use your camera to scan a physical/digital QR code for instant lookup.
+- **Download**: Generate a high-fidelity PDF certificate for valid credentials.
 
 ---
 
@@ -132,17 +131,20 @@ Certificate-DApp/
 ├── contracts/
 │   └── CertificateVerification.sol     # Smart contract logic
 ├── scripts/
-│   └── deploy.js                       # Deployment automation
+│   └── deploy.js                       # Deployment automation script
 ├── test/
-│   └── CertificateVerification.test.js # Core unit tests (18 specs)
+│   └── CertificateVerification.test.js # Comprehensive unit tests
 ├── frontend/
-│   ├── index.html                      # UI layout
-│   ├── index.css                       # Minimalist dark-mode design
-│   ├── app.js                          # Blockchain interaction logic
+│   ├── assets/                         # Branding images and icons
+│   │   ├── logo.png                    # Primary logo
+│   │   └── logo_withoutbg.png          # Favicon/Clean logo
+│   ├── index.html                      # Semantic UI structure
+│   ├── index.css                       # Modern dark-mode styling
+│   ├── app.js                          # Blockchain & UI interaction logic
 │   └── config.js                       # Auto-generated contract config
-├── hardhat.config.js                   # Network and compiler configuration
-├── package.json                        # Dependencies and task scripts
-└── .gitignore                          # Version control exclusions
+├── assets/                             # Documentation diagrams
+├── hardhat.config.js                   # Network & compiler configuration
+└── package.json                        # Scripts and dependencies
 ```
 
 ---
@@ -181,6 +183,8 @@ Re-deploy with `npm run deploy` after restarting `npm run node` to refresh the s
 - **Email Notifications**: Dispatch updates to students automatically upon issuance or revocation
 
 ---
+
+🤝 Contributions are welcome! Feel free to open an issue or submit a pull request.
 
 ## License
 
